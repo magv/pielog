@@ -1,5 +1,7 @@
 # Pielog
 
+> “Everything's better with a pie.” —A philosopher
+
 In long-running tools that center around calculating a result,
 one needs a way to see what the code has done before, and what
 is it doing right now. The former is logging; the latter is
@@ -13,26 +15,30 @@ a mixture of Python and C++ sources, threads, and subprocesses.
 
 In Python:
 
-    import pielog as pl
+```python
+import pielog as pl
 
-    with pl.trace("task"):
-        for i in range(10):
-            pl.log(f"working on item {i}")
-            pl.trace_progress(i+1, 10)
+with pl.trace("task"):
+    for i in range(10):
+        pl.log(f"working on item {i}")
+        pl.trace_progress(i+1, 10)
+```
 
 In C++:
 
-    #include <pielog.h>
+```C++
+#include <pielog.h>
 
-    ...
+...
 
-    {
-        trace_scope("task");
-        for (int i = 0; i < 10; i++) {
-            pr("working on item {}", i);
-            trace_progress(i+1, 10);
-        }
+{
+    trace_scope("task");
+    for (int i = 0; i < 10; i++) {
+        pr("working on item {}", i);
+        trace_progress(i+1, 10);
     }
+}
+```
 
 Note that the formatted printing here is its own facility,
 available standalone via `#include <bprint.h>`. We need it
@@ -42,11 +48,13 @@ and the built-in C++ printing (`iostream`) is not convenient.
 If you want your custom type to work in `pr()`, define this
 function:
 
-    static inline void
-    bprint(Buf &b, const your_type &x)
-    {
-        b.print("my_type({}, {}, {})", 1, 2, "etc");
-    }
+```C++
+static inline void
+bprint(Buf &b, const your_type &x)
+{
+    b.print("my_type({}, {}, {})", 1, 2, "etc");
+}
+```
 
 ## C++ API
 
