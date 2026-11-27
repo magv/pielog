@@ -35,16 +35,6 @@ cdef extern from "pielog/pielog.cpp":
     Pielog *pielog
     Pielog *_api()
 
-# Our utils.h defines likely/unlikely (via bprint.h); Cython's generated
-# prologue unconditionally redefines them, which g++ flags as a warning.
-# Undefine ours after the last use (the include above) so Cython's own
-# definitions go in clean.
-cdef extern from *:
-    """
-#undef likely
-#undef unlikely
-"""
-
 cdef extern from "pielog/_version.h":
     const char* _VERSION "PIELOG_VERSION"
 
